@@ -20,6 +20,13 @@ RUN mkdir -p /etc/docker/registry \
 RUN make PREFIX=/go clean binaries \
 	&& apk del --purge .build-deps
 
+# Build a minimal distribution
+FROM alpine:latest
+label maintainer="Tamás Gérczei <tamas@gerczei.eu>"
+
+COPY --from=builder /go/bin/registry /bin/registry
+COPY --from=builder /go/src/github.com/docker/distribution/cmd/registry/config-example.yml /etc/docker/registry/config.yml
+
 VOLUME ["/var/lib/registry"]
 EXPOSE 5000
 ENTRYPOINT ["/bin/registry"]
