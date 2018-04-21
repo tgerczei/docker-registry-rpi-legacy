@@ -1,0 +1,14 @@
+version: '2'
+
+# a Docker Registry for home use | @21/04/18
+# TODO: add authentication and SSL
+
+services:
+  registry:
+    container_name: registry
+    hostname: registry
+    image: registry:arm32v6
+    ports:
+      - 5000:5000
+    volumes:
+      - /iscsi-data:/var/lib/registry:rw
